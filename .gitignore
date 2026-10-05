@@ -6,3 +6,8 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+tsconfig.tsbuildinfo
+next-env.d.ts
+playwright-report/
+test-results/
+*.tsbuildinfo
