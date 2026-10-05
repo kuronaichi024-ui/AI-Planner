@@ -45,6 +45,7 @@
 
 ## Decisions
 
+- Visual polish is deferred until after Phase 7; styling uses design tokens only.
 - TypeScript pinned to `~5.9.0` (v7 breaks `@typescript-eslint/parser` peer)
 - Tailwind downgraded to v3.4.17 (v4 CLI/PostCSS incompatible with Next.js + shadcn/ui workflow)
 - ESLint pinned to `^9.0.0` (satisfies `eslint-config-next` peer)
@@ -52,6 +53,22 @@
 - ESM (`"type": "module"`) to match Next.js 16 Turbopack defaults; config files renamed to `.cjs`
 - `server-only` mocked in Vitest via alias to avoid import-time errors in test environment
 - Env validation uses Zod `superRefine` for provider-conditional key requirements (fail-fast per §12)
+
+## Build & Review Models
+
+- **Builder**: Provider `custom` (9Router), combo `"percobaan"` — a 10-model fallback chain tried in this order:
+  1. `cbai/deepseek-v4.1-flash`
+  2. `kr/claude-sonnet-4.5-thinking`
+  3. `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free`
+  4. `openrouter/nvidia/nemotron-3-super-120b-a12b:free`
+  5. `oc/muse-spark-1.3-contributor-free`
+  6. `gemini/gemini-3.8-flash`
+  7. `gemini/gemini-3.6-flash`
+  8. `cbai/kimi-k2.7`
+  9. `cbai/glm-5.2`
+  10. `cbai/minimax-m3`
+  *(Note: The active Hermes session cannot determine which specific model in the chain answered a given request.)*
+- **Reviewer**: [Pending] Per PHASES.md rhythm, Phase 0 should be reviewed in a fresh session with a different model to avoid self-grading bias. Recommended: use an independent model family (e.g. distinct from the primary fallback chain models) once approved.
 
 ## Assumptions
 
