@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Blueprint design tokens — MVP-SPEC.md §9.4
+ * Base: white / near-black on a neutral zinc scale. One accent: blue #2563EB.
+ * Status: success green, warning amber, danger red. Every text/background pair
+ * must meet WCAG AA. Values are HSL triplets consumed by tailwind.config.js.
+ */
+
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 0 0% 100%; /* white */
+    --foreground: 240 10% 3.9%; /* zinc-950 near-black */
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    /* Primary = the single accent, blue #2563EB */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4.8% 95.9%; /* zinc-100 */
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%; /* zinc-100 */
+    --muted-foreground: 240 3.8% 46.1%; /* zinc-500 */
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    /* Status */
+    --destructive: 0 72.2% 50.6%; /* red-600 */
+    --destructive-foreground: 0 0% 100%;
+    --success: 142.1 76.2% 36.3%; /* green-600 */
+    --success-foreground: 0 0% 100%;
+    --warning: 32.1 94.6% 43.7%; /* amber-600 */
+    --warning-foreground: 0 0% 100%;
+
+    /* Lines and focus */
+    --border: 240 5.9% 90%; /* zinc-200 */
+    --input: 240 5.9% 90%;
+    --ring: 221.2 83.2% 53.3%; /* accent */
+
+    /* Text link: #1D4ED8 in light */
+    --link: 224.3 76.3% 48%;
+
+    /* Provenance chips (§9.4) */
+    --chip-user-bg: 240 10% 3.9%; /* solid near-black */
+    --chip-user-fg: 0 0% 100%;
+    --chip-ai-inferred: 221.2 83.2% 53.3%; /* blue outline */
+    --chip-ai-recommended: 174.7 83.9% 31.6%; /* teal outline */
+    --chip-proposed: 240 3.8% 46.1%; /* dashed neutral border */
+    --chip-open-bg: 37.7 92.1% 50.2%; /* amber fill */
+    --chip-open-fg: 240 10% 3.9%;
+
+    /* Shape */
+    --radius: 0.375rem; /* 6px controls */
+    --radius-panel: 0.5rem; /* 8px panels */
+  }
+
+  .dark {
+    --background: 240 10% 3.9%; /* near-black */
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 5.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 5.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%; /* zinc-400 */
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 0 0% 100%;
+    --warning: 37.7 92.1% 50.2%;
+    --warning-foreground: 240 10% 3.9%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 221.2 83.2% 53.3%;
+
+    /* Text link: #60A5FA in dark */
+    --link: 213.1 93.9% 67.8%;
+
+    --chip-user-bg: 0 0% 98%; /* inverted in dark */
+    --chip-user-fg: 240 10% 3.9%;
+    --chip-ai-inferred: 213.1 93.9% 67.8%;
+    --chip-ai-recommended: 172.5 66% 50.4%;
+    --chip-proposed: 240 5% 64.9%;
+    --chip-open-bg: 37.7 92.1% 50.2%;
+    --chip-open-fg: 240 10% 3.9%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+
+  /* Keys, IDs and code use the mono font and tabular figures. */
+  .font-mono {
+    font-feature-settings:
+      "tnum" 1,
+      "zero" 1;
+  }
+
+  /* Motion: 120–180ms ease-out, no looping, honor reduced motion (§9.4). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Typography scale (§9.4): base 14/20, small 12/16, h1 24/32, h2 18/28. */
+  .text-h1 {
+    @apply text-2xl font-semibold leading-8;
+    letter-spacing: -0.01em;
+  }
+
+  .text-h2 {
+    @apply text-lg font-semibold leading-7;
+    letter-spacing: -0.01em;
+  }
+
+  .text-base-ui {
+    @apply text-sm leading-5;
+  }
+
+  .text-small {
+    @apply text-xs leading-4;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
