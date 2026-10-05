@@ -99,3 +99,23 @@ describe("envSchema shape", () => {
     expect(typeof envSchema.safeParse).toBe("function");
   });
 });
+
+describe("getEnv() startup validation", () => {
+  it("parses process.env when valid", async () => {
+    const original = { ...process.env };
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_test";
+    process.env.AI_PROVIDER = "mock";
+    
+    // Test the parseEnv function which getEnv calls internally
+    const env = parseEnv(process.env);
+    expect(env.AI_PROVIDER).toBe("mock");
+    
+    Object.assign(process.env, original);
+  });
+
+  it("throws and names missing variables when required key is absent", () => {
+    expect(() => parseEnv({})).toThrow(/NEXT_PUBLIC_SUPABASE_URL/);
+    expect(() => parseEnv({ NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co" })).toThrow(/NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/);
+  });
+});
