@@ -55,7 +55,7 @@
 
 ## Assumptions
 
-- WCAG AA contrast checked by manual inspection of token pairs against spec §9.4 values (background/foreground, primary/on-primary, success/on-success, warning/on-warning, destructive/on-destructive all exceed 4.5:1 for normal text, 3:1 for large). Formal automated audit deferred.
+- All text/background token pairs asserted ≥4.5:1 by an automated test (`tests/contrast.test.ts`) parsing `src/app/globals.css` and checking all component-used pairs in both light and dark modes. Token adjustments: light `--success` → 142.1 76.2% 29%, light `--warning` → 32.1 94.6% 34%, dark `--success-foreground` → near-black text on bright green fill, light `--muted-foreground` → zinc-700 (zinc-500 measured 4.39:1 on zinc-100, below threshold), light `--chip-ai-recommended` → 175.3 77.4% 26.1% (darker teal for AA on white), dark `--chip-ai-recommended` → 175.3 77.4% 50% (brighter teal for AA on near-black). `provenance-chip.tsx` uses `--chip-*` tokens directly instead of `text-primary` or raw teal classes.
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` uses the new publishable key format (`sb_publishable_…`) per spec guidance; legacy anon key accepted as fallback.
 - `AI_PROVIDER=mock` is the default; provider keys and models only required when provider is not `mock`.
 - Test credentials (`TEST_USER_A_*`, `TEST_USER_B_*`) are optional and only used by `scripts/verify-rls.ts` in Phase 1.

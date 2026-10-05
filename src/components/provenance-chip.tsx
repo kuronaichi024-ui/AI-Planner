@@ -16,11 +16,11 @@ const chipVariants = cva(
   {
     variants: {
       type: {
-        user: "bg-foreground text-background",
-        "ai-inferred": "border border-primary text-primary bg-transparent",
-        "ai-recommended": "border border-teal-600 text-teal-600 dark:border-teal-400 dark:text-teal-400 bg-transparent",
-        proposed: "border border-dashed border-muted-foreground text-muted-foreground bg-transparent",
-        open: "bg-warning text-warning-foreground font-medium",
+        user: "bg-[hsl(var(--chip-user-bg))] text-[hsl(var(--chip-user-fg))]",
+        "ai-inferred": "border border-[hsl(var(--chip-ai-inferred))] text-[hsl(var(--chip-ai-inferred))] bg-transparent",
+        "ai-recommended": "border border-[hsl(var(--chip-ai-recommended))] text-[hsl(var(--chip-ai-recommended))] bg-transparent",
+        proposed: "border border-dashed border-[hsl(var(--chip-proposed))] text-[hsl(var(--chip-proposed))] bg-transparent",
+        open: "bg-[hsl(var(--chip-open-bg))] text-[hsl(var(--chip-open-fg))] font-medium",
       },
     },
     defaultVariants: {
