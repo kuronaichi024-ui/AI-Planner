@@ -1,6 +1,126 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-xs)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme {
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-link: hsl(var(--link));
+
+  --color-chip-user-bg: hsl(var(--chip-user-bg));
+  --color-chip-user-fg: hsl(var(--chip-user-fg));
+
+  --color-chip-ai-inferred: hsl(var(--chip-ai-inferred));
+  --color-chip-ai-recommended: hsl(var(--chip-ai-recommended));
+  --color-chip-proposed: hsl(var(--chip-proposed));
+
+  --color-chip-open-bg: hsl(var(--chip-open-bg));
+  --color-chip-open-fg: hsl(var(--chip-open-fg));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-panel: var(--radius-panel);
+
+  --breakpoint-xs: 375px;
+
+  --container-prose: 1120px;
+
+  --transition-duration-120: 120ms;
+  --transition-duration-180: 180ms;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility text-h1 {
+  /* Typography scale (§9.4): base 14/20, small 12/16, h1 24/32, h2 18/28. */
+  @apply text-2xl font-semibold leading-8;
+  letter-spacing: -0.01em;
+}
+
+@utility text-h2 {
+  @apply text-lg font-semibold leading-7;
+  letter-spacing: -0.01em;
+}
+
+@utility text-base-ui {
+  @apply text-sm leading-5;
+}
+
+@utility text-small {
+  @apply text-xs leading-4;
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
 
 /*
  * Blueprint design tokens — MVP-SPEC.md §9.4
@@ -137,30 +257,5 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
-  }
-}
-
-@layer utilities {
-  /* Typography scale (§9.4): base 14/20, small 12/16, h1 24/32, h2 18/28. */
-  .text-h1 {
-    @apply text-2xl font-semibold leading-8;
-    letter-spacing: -0.01em;
-  }
-
-  .text-h2 {
-    @apply text-lg font-semibold leading-7;
-    letter-spacing: -0.01em;
-  }
-
-  .text-base-ui {
-    @apply text-sm leading-5;
-  }
-
-  .text-small {
-    @apply text-xs leading-4;
-  }
-
-  .tabular-nums {
-    font-variant-numeric: tabular-nums;
   }
 }
