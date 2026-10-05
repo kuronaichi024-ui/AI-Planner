@@ -47,8 +47,8 @@
 
 - Visual polish is deferred until after Phase 7; styling uses design tokens only.
 - TypeScript pinned to `~5.9.0` (v7 breaks `@typescript-eslint/parser` peer)
-- Tailwind downgraded to v3.4.17 (v4 CLI/PostCSS incompatible with Next.js + shadcn/ui workflow)
-- ESLint pinned to `^9.0.0` (satisfies `eslint-config-next` peer)
+- Tailwind upgraded to v4 via official `@tailwindcss/upgrade` tool; v3.4.17 used during scaffolding for shadcn/ui CLI compatibility, but migration completed cleanly once shadcn components were installed. PostCSS config switched to `@tailwindcss/postcss`, `autoprefixer` removed, `tailwind.config.cjs` deleted (v4 CSS-first config in `src/app/globals.css`). Check and build both pass on v4.
+- ESLint is on `9.39.5` (the latest v9 release). npm flags it as unsupported because ESLint 10 is current upstream, but ESLint 10 cannot be adopted yet: `eslint-config-next@16.3.8` has a peer dependency on ESLint `^9.7` and depends on `eslint-plugin-react@7.37.5` which fails under ESLint 10 with `TypeError: contextOrFilename.getFilename is not a function` (a legacy API removed in v10). Must remain on `eslint@^9.0.0` until Next.js updates `eslint-config-next` with ESLint 10 support.
 - shadcn/ui with zinc baseColor and CSS variables for consistent token consumption
 - ESM (`"type": "module"`) to match Next.js 16 Turbopack defaults; config files renamed to `.cjs`
 - `server-only` mocked in Vitest via alias to avoid import-time errors in test environment
