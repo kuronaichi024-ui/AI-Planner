@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProvenanceChip } from "@/components/provenance-chip";
+import { DialogDemo } from "@/components/dialog-demo";
 
 export default function StyleguidePage() {
   if (process.env.NODE_ENV === "production") {
@@ -126,6 +127,13 @@ export default function StyleguidePage() {
               <Textarea id="textarea-demo" placeholder="Type something..." />
             </div>
           </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        <section className="mb-8">
+          <h2 className="text-h2 mb-4">Dialog</h2>
+          <DialogDemo />
         </section>
 
         <Separator className="my-8" />
