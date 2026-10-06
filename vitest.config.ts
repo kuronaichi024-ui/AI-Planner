@@ -1,19 +1,19 @@
-import { defineConfig } from "vitest/config";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
+import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   test: {
-    environment: "jsdom",
+    environment: 'jsdom',
     globals: true,
-    setupFiles: ["./tests/setup.ts"],
+    setupFiles: ['./tests/setup.ts'],
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "server-only": path.resolve(__dirname, "./tests/mocks/server-only.ts"),
+      '@': path.resolve(__dirname, './src'),
+      'server-only': path.resolve(__dirname, './tests/mocks/server-only.ts'),
     },
   },
 });

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Error({
   error,
@@ -12,7 +12,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log to the server console only in development; never expose details.
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       console.error(error);
     }
   }, [error]);

@@ -1,5 +1,5 @@
-import { APP_NAME } from "@/config/app";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { APP_NAME } from '@/config/app';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function Home() {
   return (
@@ -9,10 +9,10 @@ export default function Home() {
       </div>
       <h1 className="text-h1">{APP_NAME}</h1>
       <p className="max-w-prose text-center text-base-ui text-muted-foreground">
-        Turn a vague idea into a structured, build-ready specification that
-        humans and AI coding agents can execute.
+        Turn a vague idea into a structured, build-ready specification that humans and AI coding
+        agents can execute.
       </p>
-      {process.env.NODE_ENV === "development" && (
+      {process.env.NODE_ENV === 'development' && (
         <a
           href="/styleguide"
           className="text-sm font-medium text-link underline-offset-4 hover:underline"

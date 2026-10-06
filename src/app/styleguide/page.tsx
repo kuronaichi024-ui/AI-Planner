@@ -1,18 +1,18 @@
-import { notFound } from "next/navigation";
-import { APP_NAME } from "@/config/app";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ProvenanceChip } from "@/components/provenance-chip";
-import { DialogDemo } from "@/components/dialog-demo";
+import { notFound } from 'next/navigation';
+import { APP_NAME } from '@/config/app';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ProvenanceChip } from '@/components/provenance-chip';
+import { DialogDemo } from '@/components/dialog-demo';
 
 export default function StyleguidePage() {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === 'production') {
     notFound();
   }
 
@@ -143,7 +143,9 @@ export default function StyleguidePage() {
           <div className="rounded-lg border bg-card p-4">
             <div className="flex items-center gap-3">
               <span className="font-mono text-sm text-muted-foreground">REQ-004</span>
-              <span className="flex-1 text-sm">Users must be able to sign in with email and password</span>
+              <span className="flex-1 text-sm">
+                Users must be able to sign in with email and password
+              </span>
               <ProvenanceChip type="user" />
               <Badge variant="outline">Must</Badge>
               <span className="text-xs text-muted-foreground">3 links</span>

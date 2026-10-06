@@ -5,29 +5,34 @@
 ### Phase 0 — Foundation (Complete)
 
 **Scaffolding & Tooling**
+
 - Next.js 16 (App Router, TypeScript strict, `src/` directory, `@/*` alias)
 - Tailwind CSS v3.4.17 (PostCSS), shadcn/ui (zinc baseColor, cssVariables) with all required components
 - Prettier, ESLint 9 + typescript-eslint, Vitest (jsdom + Testing Library), Playwright config (3 projects)
 - npm scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `test`, `test:e2e`, `format`, `check`
 
 **Design Tokens & Theme**
+
 - CSS variables for light/dark per MVP-SPEC §9.4 (zinc neutrals, single blue accent #2563EB, success/warning/danger states)
 - Tailwind theme mapping (colors, font families: Inter + JetBrains Mono, radius, spacing)
 - `next-themes` with `ThemeToggle`, compact 14px base density
 - `/styleguide` page (404 in prod) demonstrating all tokens, typography, buttons, provenance chips (USER/AI-INFERRED/AI-RECOMMENDED/PROPOSED/OPEN), badges, form elements, item-list row, skeleton, empty state — works in both themes
 
 **Configuration**
+
 - `src/config/app.ts`: `APP_NAME = "Blueprint"`
 - `src/config/env.ts`: Zod-validated env schema with provider-conditional requirements (fail-fast with clear error naming missing variable)
 - `.env.example` with every variable from MVP-SPEC §12
 
 **Server Module Skeletons (pure boundaries documented)**
+
 - `src/server/db/index.ts` — only module in `src/` that may import `@supabase/*`
 - `src/server/brain/index.ts` — pure TypeScript: no React, Supabase, server/ai, Date/crypto
 - `src/server/ai/index.ts` — AI orchestration, returns validated ops, never writes DB directly
 - `src/server/outputs/index.ts` — pure renderers/validators, no React, Supabase, server/ai
 
 **Guardrails (ESLint no-restricted-imports)**
+
 - `server/brain` cannot import React, Supabase, `server/ai`, `server/db`, or `server-only`
 - `server/outputs` cannot import React, Supabase, `server/ai`, `server/db`, or `server-only`
 - Within `src/`, only `server/db` may import `@supabase/*`
@@ -35,11 +40,13 @@
 - Proven by temporary test files that lint errors on forbidden imports
 
 **Pages & Layout**
+
 - Root layout with Inter/JetBrains Mono via `next/font`, `ThemeProvider`, `ThemeToggle`
 - `/` shows APP_NAME + dev-mode link to `/styleguide`
 - 404 and error pages using design system components
 
 **Tests**
+
 - Vitest: 12 passing tests (sample + env parsing with provider-conditional validation)
 - Playwright: config with chromium, mobile-chrome (Pixel 5), mobile-safari (iPhone 12)
 
@@ -67,7 +74,7 @@
   8. `cbai/kimi-k2.7`
   9. `cbai/glm-5.2`
   10. `cbai/minimax-m3`
-  *(Note: The active Hermes session cannot determine which specific model in the chain answered a given request.)*
+      _(Note: The active Hermes session cannot determine which specific model in the chain answered a given request.)_
 - **Reviewer**: [Pending] Per PHASES.md rhythm, Phase 0 should be reviewed in a fresh session with a different model to avoid self-grading bias. Recommended: use an independent model family (e.g. distinct from the primary fallback chain models) once approved.
 
 ## Assumptions

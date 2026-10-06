@@ -1,6 +1,6 @@
 # Blueprint — MVP Specification
 
-**Status:** v1 (MVP) · **Audience:** AI coding agents and the owner. MUST / SHOULD are used in the RFC 2119 sense. Anything labelled *Illustrative* is an example, never data or a requirement. "Blueprint" is a working title (one constant: `APP_NAME`).
+**Status:** v1 (MVP) · **Audience:** AI coding agents and the owner. MUST / SHOULD are used in the RFC 2119 sense. Anything labelled _Illustrative_ is an example, never data or a requirement. "Blueprint" is a working title (one constant: `APP_NAME`).
 
 ---
 
@@ -105,26 +105,26 @@ The Brain is one validated JSONB document stored in `projects.brain`.
 ```ts
 type Brain = {
   schema_version: 1;
-  counters: Partial<Record<Prefix, number>>;   // monotonic; keys are never reused
+  counters: Partial<Record<Prefix, number>>; // monotonic; keys are never reused
   items: Item[];
   links: Link[];
 };
 
 type Item = {
-  key: string;                       // 'REQ-004' = PREFIX-### (zero-padded to 3, grows beyond)
+  key: string; // 'REQ-004' = PREFIX-### (zero-padded to 3, grows beyond)
   type: ItemType;
-  title: string;                     // 1..120 chars, unique per type (case-insensitive)
-  data: ItemData;                    // validated by the schema for `type`
+  title: string; // 1..120 chars, unique per type (case-insensitive)
+  data: ItemData; // validated by the schema for `type`
   source: 'user' | 'ai_inferred' | 'ai_recommended';
-  status: 'confirmed' | 'rejected';  // rejected = tombstone so the AI does not re-propose it
-  reason: string;                    // why this exists
-  evidence?: string;                 // verbatim user words; REQUIRED when source = 'user'
-  confidence: number;                // 0..1; exactly 1 for source 'user'
+  status: 'confirmed' | 'rejected'; // rejected = tombstone so the AI does not re-propose it
+  reason: string; // why this exists
+  evidence?: string; // verbatim user words; REQUIRED when source = 'user'
+  confidence: number; // 0..1; exactly 1 for source 'user'
   created_at: string;
   updated_at: string;
 };
 
-type Link = { from: string; to: string; kind: LinkKind };   // endpoints are item keys
+type Link = { from: string; to: string; kind: LinkKind }; // endpoints are item keys
 ```
 
 ### 4.2 Item types and data
@@ -132,45 +132,94 @@ type Link = { from: string; to: string; kind: LinkKind };   // endpoints are ite
 ```ts
 type Priority = 'must' | 'should' | 'could' | 'wont';
 
-type VisionData       = { statement: string; problem: string; target_users: string; non_goals: string[] };   // VIS  (singleton)
-type GoalData         = { description: string; success_metric?: string };                                     // GOAL
-type RoleData         = { description: string; permissions: string[] };                                       // ROLE (plain-language capabilities)
-type RequirementData  = { kind: 'functional' | 'non_functional' | 'edge_case' | 'constraint';
-                          statement: string; priority: Priority; acceptance_criteria: string[] };             // REQ
-type FeatureData      = { description: string; priority: Exclude<Priority, 'wont'>; primary_flow: string[] }; // FEAT (ordered steps)
-type ScreenData       = { route: string; purpose: string; components: string[]; actions: string[];
-                          states: { loading: string; empty: string; error: string }; permissions: string };   // SCR
-type EntityField      = { name: string;
-                          type: 'string' | 'text' | 'int' | 'decimal' | 'boolean' | 'date' | 'datetime' | 'enum' | 'uuid' | 'json' | 'ref';
-                          required: boolean; enum_values?: string[]; ref_entity?: string /* ENT key */; notes?: string };
-type EntityData       = { description: string; fields: EntityField[] };                                       // ENT
-type BusinessRuleData = { statement: string; rationale?: string };                                            // BR
-type DecisionData     = { topic: 'auth' | 'database' | 'frontend' | 'backend' | 'hosting' | 'payments'
-                                | 'storage' | 'email' | 'ai' | 'product' | 'other';
-                          choice: string; rationale: string; alternatives: string[] };                        // DEC
-type AssumptionData   = { statement: string; risk_if_wrong: string };                                         // ASM
-type TaskData         = { phase: { index: number; title: string }; description: string; acceptance_criteria: string[];
-                          files_hint: string[]; priority: 'high' | 'medium' | 'low';
-                          state: 'todo' | 'in_progress' | 'done' | 'blocked' };                               // TASK
+type VisionData = { statement: string; problem: string; target_users: string; non_goals: string[] }; // VIS  (singleton)
+type GoalData = { description: string; success_metric?: string }; // GOAL
+type RoleData = { description: string; permissions: string[] }; // ROLE (plain-language capabilities)
+type RequirementData = {
+  kind: 'functional' | 'non_functional' | 'edge_case' | 'constraint';
+  statement: string;
+  priority: Priority;
+  acceptance_criteria: string[];
+}; // REQ
+type FeatureData = {
+  description: string;
+  priority: Exclude<Priority, 'wont'>;
+  primary_flow: string[];
+}; // FEAT (ordered steps)
+type ScreenData = {
+  route: string;
+  purpose: string;
+  components: string[];
+  actions: string[];
+  states: { loading: string; empty: string; error: string };
+  permissions: string;
+}; // SCR
+type EntityField = {
+  name: string;
+  type:
+    | 'string'
+    | 'text'
+    | 'int'
+    | 'decimal'
+    | 'boolean'
+    | 'date'
+    | 'datetime'
+    | 'enum'
+    | 'uuid'
+    | 'json'
+    | 'ref';
+  required: boolean;
+  enum_values?: string[];
+  ref_entity?: string /* ENT key */;
+  notes?: string;
+};
+type EntityData = { description: string; fields: EntityField[] }; // ENT
+type BusinessRuleData = { statement: string; rationale?: string }; // BR
+type DecisionData = {
+  topic:
+    | 'auth'
+    | 'database'
+    | 'frontend'
+    | 'backend'
+    | 'hosting'
+    | 'payments'
+    | 'storage'
+    | 'email'
+    | 'ai'
+    | 'product'
+    | 'other';
+  choice: string;
+  rationale: string;
+  alternatives: string[];
+}; // DEC
+type AssumptionData = { statement: string; risk_if_wrong: string }; // ASM
+type TaskData = {
+  phase: { index: number; title: string };
+  description: string;
+  acceptance_criteria: string[];
+  files_hint: string[];
+  priority: 'high' | 'medium' | 'low';
+  state: 'todo' | 'in_progress' | 'done' | 'blocked';
+}; // TASK
 ```
 
 ### 4.3 Links
 
 Kinds: `belongs_to`, `involves`, `implements`, `depends_on`, `affects`, `conflicts_with`, `derived_from`. Allowed combinations (enforced in `applyOps`):
 
-| from | kind | to |
-| --- | --- | --- |
-| requirement | belongs_to | feature |
-| screen | belongs_to | feature |
-| feature | involves | role, entity |
-| screen | involves | role |
-| business_rule | affects | feature, requirement, entity |
-| decision | affects | any type |
-| task | implements | requirement, feature, screen, entity |
-| task | depends_on | task |
-| feature | depends_on | feature |
-| requirement | conflicts_with | requirement |
-| any type | derived_from | any type (optional provenance) |
+| from          | kind           | to                                   |
+| ------------- | -------------- | ------------------------------------ |
+| requirement   | belongs_to     | feature                              |
+| screen        | belongs_to     | feature                              |
+| feature       | involves       | role, entity                         |
+| screen        | involves       | role                                 |
+| business_rule | affects        | feature, requirement, entity         |
+| decision      | affects        | any type                             |
+| task          | implements     | requirement, feature, screen, entity |
+| task          | depends_on     | task                                 |
+| feature       | depends_on     | feature                              |
+| requirement   | conflicts_with | requirement                          |
+| any type      | derived_from   | any type (optional provenance)       |
 
 Integrity: both endpoints exist; no self-links; no duplicate (from, kind, to); deleting an item deletes its links; `depends_on` MUST stay acyclic.
 
@@ -185,12 +234,21 @@ Integrity: both endpoints exist; no self-links; no duplicate (from, kind, to); d
 ### 4.5 Operations
 
 ```ts
-type Ref = string;   // an existing key ('REQ-004') or a temp ref ('@1') pointing at a create op in the same batch
+type Ref = string; // an existing key ('REQ-004') or a temp ref ('@1') pointing at a create op in the same batch
 
 type Op =
-  | { op: 'create'; ref?: string; type: ItemType; title: string; data: unknown;
-      source: Source; reason: string; confidence: number; evidence?: string;
-      links?: { kind: LinkKind; to: Ref }[] }                      // links go FROM this new item
+  | {
+      op: 'create';
+      ref?: string;
+      type: ItemType;
+      title: string;
+      data: unknown;
+      source: Source;
+      reason: string;
+      confidence: number;
+      evidence?: string;
+      links?: { kind: LinkKind; to: Ref }[];
+    } // links go FROM this new item
   | { op: 'update'; key: string; title?: string; data?: unknown; reason: string; evidence?: string }
   | { op: 'delete'; key: string; reason: string }
   | { op: 'link' | 'unlink'; from: Ref; kind: LinkKind; to: Ref };
@@ -213,15 +271,15 @@ type Op =
 
 All tables have RLS enabled. Owner-only access: `projects.owner_id = auth.uid()`, and every child table checks ownership through its project. The app uses the user-scoped Supabase client only; the `service_role` key is never used by app code.
 
-| Table | Columns |
-| --- | --- |
-| `projects` | id uuid pk, owner_id uuid, name text, idea_text text, language text default 'auto', brain jsonb default empty Brain, brain_revision int default 0, readiness_score int default 0, counts jsonb default '{}', created_at, updated_at |
-| `messages` | id, project_id, role ('user','assistant'), content text, structured jsonb null, created_at |
-| `proposals` | id, project_id, message_id null, ops jsonb (each op carries `opId`), status ('pending','accepted','rejected','partial'), created_at, decided_at null |
-| `insights` | id, project_id, message_id null, kind ('question','ambiguity','contradiction','missing','risk'), title, detail, category, blocking bool, related_keys text[], options jsonb, allow_other bool, multi bool, status ('open','resolved','dismissed'), resolution jsonb null, created_at, resolved_at null |
-| `brain_events` | id, project_id, actor ('user','ai','system'), kind text, summary text, payload jsonb, revision int, created_at |
-| `exports` | id, project_id, kind ('prd','agent_prompt'), variant text null, content_md text, brain_revision int, created_at |
-| `ai_usage` | id, user_id, project_id, job ('interview','plan','summary'), provider, model, input_tokens, output_tokens, latency_ms, ok bool, error_code text null, created_at |
+| Table          | Columns                                                                                                                                                                                                                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `projects`     | id uuid pk, owner_id uuid, name text, idea_text text, language text default 'auto', brain jsonb default empty Brain, brain_revision int default 0, readiness_score int default 0, counts jsonb default '{}', created_at, updated_at                                                                    |
+| `messages`     | id, project_id, role ('user','assistant'), content text, structured jsonb null, created_at                                                                                                                                                                                                             |
+| `proposals`    | id, project_id, message_id null, ops jsonb (each op carries `opId`), status ('pending','accepted','rejected','partial'), created_at, decided_at null                                                                                                                                                   |
+| `insights`     | id, project_id, message_id null, kind ('question','ambiguity','contradiction','missing','risk'), title, detail, category, blocking bool, related_keys text[], options jsonb, allow_other bool, multi bool, status ('open','resolved','dismissed'), resolution jsonb null, created_at, resolved_at null |
+| `brain_events` | id, project_id, actor ('user','ai','system'), kind text, summary text, payload jsonb, revision int, created_at                                                                                                                                                                                         |
+| `exports`      | id, project_id, kind ('prd','agent_prompt'), variant text null, content_md text, brain_revision int, created_at                                                                                                                                                                                        |
+| `ai_usage`     | id, user_id, project_id, job ('interview','plan','summary'), provider, model, input_tokens, output_tokens, latency_ms, ok bool, error_code text null, created_at                                                                                                                                       |
 
 `projects.counts` holds counts of confirmed items: `{ requirements, features, roles, screens, entities, rules, decisions, tasks }`. The build plan is the `task` items (there is no `build_plan` export).
 
@@ -261,9 +319,15 @@ interface LLMProvider {
     job: 'interview' | 'plan' | 'summary';
     system: string;
     messages: { role: 'user' | 'assistant'; content: string }[];
-    schema: ZodTypeAny;                       // used to derive the provider's JSON schema
-    maxOutputTokens: number; temperature: number; timeoutMs: number;
-  }): Promise<{ object: unknown; usage: { inputTokens: number; outputTokens: number }; latencyMs: number }>;
+    schema: ZodTypeAny; // used to derive the provider's JSON schema
+    maxOutputTokens: number;
+    temperature: number;
+    timeoutMs: number;
+  }): Promise<{
+    object: unknown;
+    usage: { inputTokens: number; outputTokens: number };
+    latencyMs: number;
+  }>;
 }
 ```
 
@@ -276,38 +340,80 @@ interface LLMProvider {
 ### 6.2 Contracts
 
 ```ts
-type Category = 'product_definition' | 'roles' | 'features' | 'screens'
-              | 'data_model' | 'business_rules' | 'edge_cases' | 'technical_decisions';
+type Category =
+  | 'product_definition'
+  | 'roles'
+  | 'features'
+  | 'screens'
+  | 'data_model'
+  | 'business_rules'
+  | 'edge_cases'
+  | 'technical_decisions';
 
-type Question = { id: string; text: string; why: string; category: Category;
-                  kind: 'single' | 'multi' | 'text'; options: { id: string; label: string }[];   // 2..5, empty for 'text'
-                  allow_other: boolean; blocking: boolean; related_keys: string[] };
+type Question = {
+  id: string;
+  text: string;
+  why: string;
+  category: Category;
+  kind: 'single' | 'multi' | 'text';
+  options: { id: string; label: string }[]; // 2..5, empty for 'text'
+  allow_other: boolean;
+  blocking: boolean;
+  related_keys: string[];
+};
 
-type Insight  = { kind: 'ambiguity' | 'contradiction' | 'missing' | 'risk'; title: string; detail: string;
-                  category: Category; blocking: boolean; related_keys: string[];
-                  options?: { id: string; label: string }[]; allow_other?: boolean };
+type Insight = {
+  kind: 'ambiguity' | 'contradiction' | 'missing' | 'risk';
+  title: string;
+  detail: string;
+  category: Category;
+  blocking: boolean;
+  related_keys: string[];
+  options?: { id: string; label: string }[];
+  allow_other?: boolean;
+};
 
-type AiTurn   = { reply: string /* 1..1200 chars */; questions: Question[] /* max 3 */;
-                  insights: Insight[] /* max 8 */; ops: Op[] /* max 60 */ };
+type AiTurn = {
+  reply: string /* 1..1200 chars */;
+  questions: Question[] /* max 3 */;
+  insights: Insight[] /* max 8 */;
+  ops: Op[]; /* max 60 */
+};
 
-type PlanTurn = { phases: { index: number; title: string }[]; ops: Op[] /* max 400 */ };   // ops create tasks + links
+type PlanTurn = { phases: { index: number; title: string }[]; ops: Op[] /* max 400 */ }; // ops create tasks + links
 type SummaryTurn = { summary: string /* max 1200 chars */ };
 
 type TurnInput = {
   projectId: string;
   intent: 'chat' | 'analyze_idea';
-  message?: string;                                          // max 8,000 chars
+  message?: string; // max 8,000 chars
   answers?: { insightId: string; optionIds?: string[]; text?: string }[];
-  focus?: { checkIds?: string[]; insightIds?: string[] };    // "Resolve with AI"
-  retryMessageId?: string;                                   // re-run without storing a new user message
-};                                                           // 'chat': at least one of message, answers, focus. 'analyze_idea': no other field (the server stores `projects.idea_text` as the first user message)
+  focus?: { checkIds?: string[]; insightIds?: string[] }; // "Resolve with AI"
+  retryMessageId?: string; // re-run without storing a new user message
+}; // 'chat': at least one of message, answers, focus. 'analyze_idea': no other field (the server stores `projects.idea_text` as the first user message)
 
-type TurnResult = { messageId: string; reply: string; autoApplied: OpSummary[];
-                    proposal?: { id: string; ops: OpSummary[] }; insights: InsightRow[];
-                    readiness: ReadinessReport; potentialReadiness: number; brainRevision: number };
+type TurnResult = {
+  messageId: string;
+  reply: string;
+  autoApplied: OpSummary[];
+  proposal?: { id: string; ops: OpSummary[] };
+  insights: InsightRow[];
+  readiness: ReadinessReport;
+  potentialReadiness: number;
+  brainRevision: number;
+};
 
-type OpSummary = { opId?: string; op: Op['op']; key?: string; type?: ItemType; title?: string;
-                   source?: Source; reason: string; confidence?: number; evidence?: string };   // opId is set only inside proposals
+type OpSummary = {
+  opId?: string;
+  op: Op['op'];
+  key?: string;
+  type?: ItemType;
+  title?: string;
+  source?: Source;
+  reason: string;
+  confidence?: number;
+  evidence?: string;
+}; // opId is set only inside proposals
 // InsightRow: one row of the `insights` table (§5), camelCased.
 ```
 
@@ -354,25 +460,25 @@ Token budget defaults to ~6,000 tokens (estimate chars/4). Degrade in levels: L0
 
 ### 6.6 Failure handling
 
-| Error | HTTP |
-| --- | --- |
-| not signed in | 401 |
-| rate limit | 429 with Retry-After |
-| `AI_INVALID_OUTPUT` | 422 |
-| `AI_TIMEOUT` | 504 |
-| `AI_PROVIDER_ERROR` | 502 |
+| Error               | HTTP                 |
+| ------------------- | -------------------- |
+| not signed in       | 401                  |
+| rate limit          | 429 with Retry-After |
+| `AI_INVALID_OUTPUT` | 422                  |
+| `AI_TIMEOUT`        | 504                  |
+| `AI_PROVIDER_ERROR` | 502                  |
 
 The UI shows a retry card and preserves the user's text. Never forward provider error bodies to the client.
 
 ### 6.7 API surface
 
-| Endpoint | Purpose |
-| --- | --- |
-| `POST /api/ai/turn` | Interview turn: `TurnInput` → `TurnResult` (§6.2–6.3) |
-| `POST /api/projects/[id]/proposals/[proposalId]` | Accept or reject a proposal (§6.3) |
-| `POST /api/projects/[id]/generate/plan` | Build plan (§8.1) |
-| `POST /api/projects/[id]/generate/prd` | PRD (§8.2) |
-| `POST /api/projects/[id]/generate/agent-prompt` | AI coding prompts, all four variants (§8.3) |
+| Endpoint                                         | Purpose                                               |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| `POST /api/ai/turn`                              | Interview turn: `TurnInput` → `TurnResult` (§6.2–6.3) |
+| `POST /api/projects/[id]/proposals/[proposalId]` | Accept or reject a proposal (§6.3)                    |
+| `POST /api/projects/[id]/generate/plan`          | Build plan (§8.1)                                     |
+| `POST /api/projects/[id]/generate/prd`           | PRD (§8.2)                                            |
+| `POST /api/projects/[id]/generate/agent-prompt`  | AI coding prompts, all four variants (§8.3)           |
 
 Two server actions complete the write surface for Brain data. Project create, rename, delete and auth are plain server actions and are not listed here.
 
@@ -387,26 +493,34 @@ Deterministic and never hardcoded: `computeReadiness(brain, openInsights): Readi
 
 ```ts
 type ReadinessReport = {
-  overall: number;                                   // integer 0..100
+  overall: number; // integer 0..100
   label: 'Early' | 'Taking shape' | 'Almost ready' | 'Build-ready';
-  categories: Record<Category, { score: number; passed: number; total: number; penalty: number;
-                                 failing: { id: string; label: string; hint: string }[] }>;
+  categories: Record<
+    Category,
+    {
+      score: number;
+      passed: number;
+      total: number;
+      penalty: number;
+      failing: { id: string; label: string; hint: string }[];
+    }
+  >;
   openBlocking: number;
 };
 ```
 
 Only `confirmed` items count. A check of the form "every X ..." FAILS when there are zero X. Checks:
 
-| Category (weight) | Checks |
-| --- | --- |
-| product_definition (0.15) | P1 vision.statement non-empty · P2 vision.problem non-empty · P3 vision.target_users non-empty · P4 at least 1 goal · P5 vision.non_goals has at least 1 entry |
-| roles (0.10) | R1 at least 1 role · R2 every role has at least 1 permission · R3 every role is involved by at least 1 feature |
-| features (0.20) | F1 at least 1 feature · F2 at least 1 feature with priority must · F3 every feature has at least 1 requirement · F4 every feature involves at least 1 role · F5 every feature's primary_flow has at least 2 steps · F6 every must requirement has at least 1 acceptance criterion |
-| screens (0.10) | S1 at least 1 screen · S2 every must feature has at least 1 screen · S3 every screen has route, purpose and at least 1 role · S4 every screen has non-empty loading, empty and error states |
-| data_model (0.15) | D1 at least 1 entity · D2 every entity has at least 1 field · D3 every entity is involved by at least 1 feature · D4 every ref field points to an existing entity |
-| business_rules (0.10) | B1 at least 1 rule · B2 every rule affects at least 1 item · B3 every must feature is affected by at least 1 rule or has at least 1 constraint requirement |
-| edge_cases (0.10) | E1 every must feature has at least 1 edge_case requirement · E2 at least 1 non_functional requirement |
-| technical_decisions (0.10) | T-auth, T-database, T-frontend, T-backend, T-hosting: a decision with that topic exists |
+| Category (weight)          | Checks                                                                                                                                                                                                                                                                            |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| product_definition (0.15)  | P1 vision.statement non-empty · P2 vision.problem non-empty · P3 vision.target_users non-empty · P4 at least 1 goal · P5 vision.non_goals has at least 1 entry                                                                                                                    |
+| roles (0.10)               | R1 at least 1 role · R2 every role has at least 1 permission · R3 every role is involved by at least 1 feature                                                                                                                                                                    |
+| features (0.20)            | F1 at least 1 feature · F2 at least 1 feature with priority must · F3 every feature has at least 1 requirement · F4 every feature involves at least 1 role · F5 every feature's primary_flow has at least 2 steps · F6 every must requirement has at least 1 acceptance criterion |
+| screens (0.10)             | S1 at least 1 screen · S2 every must feature has at least 1 screen · S3 every screen has route, purpose and at least 1 role · S4 every screen has non-empty loading, empty and error states                                                                                       |
+| data_model (0.15)          | D1 at least 1 entity · D2 every entity has at least 1 field · D3 every entity is involved by at least 1 feature · D4 every ref field points to an existing entity                                                                                                                 |
+| business_rules (0.10)      | B1 at least 1 rule · B2 every rule affects at least 1 item · B3 every must feature is affected by at least 1 rule or has at least 1 constraint requirement                                                                                                                        |
+| edge_cases (0.10)          | E1 every must feature has at least 1 edge_case requirement · E2 at least 1 non_functional requirement                                                                                                                                                                             |
+| technical_decisions (0.10) | T-auth, T-database, T-frontend, T-backend, T-hosting: a decision with that topic exists                                                                                                                                                                                           |
 
 **Formulas**
 
@@ -503,7 +617,7 @@ Left nav: **PROJECT** — Overview, Requirements, Features, Roles, Screens, Data
 - **Dashboard.** Time-of-day greeting from the browser clock. Cards show name, readiness, requirement and feature counts (from `projects.counts`), relative updated time. "+ New project". Empty state with one sentence and a button.
 - **New project.** One large textarea labelled "What do you want to build?" and a "Start Planning" button (disabled under 10 characters). Creating the project stores `idea_text`, opens the workspace and fires the first turn (`analyze_idea`). While waiting: a staged panel "Reading your idea…" with elapsed seconds — no fake progress. On error: a retry card.
 - **Architect panel.** Message list, composer (Enter sends, Shift+Enter newline, 8,000-character counter), sending state, retry on failure, `aria-live="polite"` for new assistant messages. An assistant message may contain: (a) **question cards** — radio, checkbox or text, "Other…" when allowed, Submit; submitting sends structured `answers`, not a rewritten sentence; (b) a **proposals card** — "Proposed changes (n)" grouped by item type, each row with type chip, title, reason, confidence and evidence quote, checkboxes checked by default, "Accept selected" and "Reject all"; (c) a collapsible **Applied automatically (n)** block with evidence quotes; (d) insight chips linking to the attention list.
-- **Overview.** (1) *Magic-moment panel* after the first successful analysis until dismissed: the quoted idea; "The Architect proposed: …" with counts by item type from the pending proposal; readiness now versus "if you accept everything"; primary action "Review proposals", later "Generate Build Plan" once readiness is at least 70 (still available below 70 with a warning that unresolved items will be listed as open questions). (2) *Readiness panel*: large number, label, per-category bars with passed/total, the sentence "Your project is N% build-ready." (3) *Needs attention* list with "Resolve with AI". (4) Vision and goals, editable.
+- **Overview.** (1) _Magic-moment panel_ after the first successful analysis until dismissed: the quoted idea; "The Architect proposed: …" with counts by item type from the pending proposal; readiness now versus "if you accept everything"; primary action "Review proposals", later "Generate Build Plan" once readiness is at least 70 (still available below 70 with a warning that unresolved items will be listed as open questions). (2) _Readiness panel_: large number, label, per-category bars with passed/total, the sentence "Your project is N% build-ready." (3) _Needs attention_ list with "Resolve with AI". (4) Vision and goals, editable.
 - **Item sections.** One generic `ItemTable` + `ItemDialog` driven by an `ITEM_UI` config (label, columns, field editors) for every type except `task`. Row: key (mono), title, provenance chip, priority chip if any, link count. Filters: provenance, confirmed/rejected, text search. Dialog: fields, provenance block (source, reason, confidence, evidence), outgoing and incoming links with titles, Edit, Delete, "Ask the Architect about this". Edits go through `applyOps({ actor: 'user' })` and `commit_brain`; on `REVISION_CONFLICT` reload and reapply once, otherwise ask the user to retry.
 - **Insights.** Contradiction card: both items side by side with "Keep A", "Keep B", "Define new rule". Ambiguity, missing and question cards: options plus "Other". Risk cards: "Acknowledge" or "Ask the Architect". Resolving posts structured answers and runs a turn.
 - **Build plan page.** Progress (done/total), "Generate build plan" / "Regenerate" with a confirm dialog, tasks grouped by phase (collapsible), per-task state selector and dependency keys, a task dialog with acceptance criteria and linked requirements, "Copy plan as Markdown".

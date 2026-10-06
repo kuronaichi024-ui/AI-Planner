@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const globalsCss = readFileSync(path.resolve(__dirname, "../src/app/globals.css"), "utf-8");
+const globalsCss = readFileSync(path.resolve(__dirname, '../src/app/globals.css'), 'utf-8');
 
 type Hsl = [number, number, number];
 
@@ -18,8 +18,16 @@ function parseValue(raw: string): Hsl | null {
   const hex = hexRe.exec(v);
   if (hex) {
     let hexStr = hex[1];
-    if (hexStr.length === 3) hexStr = hexStr.split("").map(c => c + c).join("");
-    if (hexStr.length === 4) hexStr = hexStr.split("").map(c => c + c).join("");
+    if (hexStr.length === 3)
+      hexStr = hexStr
+        .split('')
+        .map(c => c + c)
+        .join('');
+    if (hexStr.length === 4)
+      hexStr = hexStr
+        .split('')
+        .map(c => c + c)
+        .join('');
     if (hexStr.length !== 6 && hexStr.length !== 8) return null;
     const r = parseInt(hexStr.slice(0, 2), 16) / 255;
     const g = parseInt(hexStr.slice(2, 4), 16) / 255;
@@ -74,7 +82,7 @@ function contrast(a: Hsl, b: Hsl): number {
 
 function extractTheme(css: string, selector: string): Theme {
   const start = css.indexOf(`${selector} {`);
-  const end = css.indexOf("}", start);
+  const end = css.indexOf('}', start);
   const block = css.slice(start, end);
   const vars: Theme = {};
   const re = /--([\w-]+):\s*([^;!]+)/g;
@@ -86,8 +94,8 @@ function extractTheme(css: string, selector: string): Theme {
   return vars;
 }
 
-const light = extractTheme(globalsCss, ":root");
-const dark = extractTheme(globalsCss, ".dark");
+const light = extractTheme(globalsCss, ':root');
+const dark = extractTheme(globalsCss, '.dark');
 
 function pair(
   name: string,
@@ -100,23 +108,23 @@ function pair(
 
 // Token pairs that components actually use. Must all be >= 4.5:1 per MVP-SPEC §9.4.
 const pairs = [
-  pair("Foreground on background", "foreground", "background"),
-  pair("Primary foreground on primary", "primary-foreground", "primary"),
-  pair("Secondary foreground on secondary", "secondary-foreground", "secondary"),
-  pair("Muted foreground on muted", "muted-foreground", "muted"),
-  pair("Accent foreground on accent", "accent-foreground", "accent"),
-  pair("Card foreground on card", "card-foreground", "card"),
-  pair("Popover foreground on popover", "popover-foreground", "popover"),
-  pair("Destructive foreground on destructive", "destructive-foreground", "destructive"),
-  pair("Success foreground on success", "success-foreground", "success"),
-  pair("Warning foreground on warning", "warning-foreground", "warning"),
-  pair("Chip user", "chip-user-fg", "chip-user-bg"),
-  pair("Chip AI inferred (outline)", "chip-ai-inferred", "background"),
-  pair("Chip AI recommended (outline)", "chip-ai-recommended", "background"),
-  pair("Chip proposed (outline)", "chip-proposed", "background"),
-  pair("Chip open", "chip-open-fg", "chip-open-bg"),
-  pair("Link on background", "link", "background"),
-  pair("Input text on input", "foreground", "input"),
+  pair('Foreground on background', 'foreground', 'background'),
+  pair('Primary foreground on primary', 'primary-foreground', 'primary'),
+  pair('Secondary foreground on secondary', 'secondary-foreground', 'secondary'),
+  pair('Muted foreground on muted', 'muted-foreground', 'muted'),
+  pair('Accent foreground on accent', 'accent-foreground', 'accent'),
+  pair('Card foreground on card', 'card-foreground', 'card'),
+  pair('Popover foreground on popover', 'popover-foreground', 'popover'),
+  pair('Destructive foreground on destructive', 'destructive-foreground', 'destructive'),
+  pair('Success foreground on success', 'success-foreground', 'success'),
+  pair('Warning foreground on warning', 'warning-foreground', 'warning'),
+  pair('Chip user', 'chip-user-fg', 'chip-user-bg'),
+  pair('Chip AI inferred (outline)', 'chip-ai-inferred', 'background'),
+  pair('Chip AI recommended (outline)', 'chip-ai-recommended', 'background'),
+  pair('Chip proposed (outline)', 'chip-proposed', 'background'),
+  pair('Chip open', 'chip-open-fg', 'chip-open-bg'),
+  pair('Link on background', 'link', 'background'),
+  pair('Input text on input', 'foreground', 'input'),
 ];
 
 function assertRatio(theme: Theme, themeName: string, fgVar: string, bgVar: string, name: string) {
@@ -131,21 +139,29 @@ function assertRatio(theme: Theme, themeName: string, fgVar: string, bgVar: stri
   ).toBeGreaterThanOrEqual(4.5);
 }
 
-describe("WCAG AA contrast of design tokens", () => {
-  it("light mode tokens meet 4.5:1", () => {
+describe('WCAG AA contrast of design tokens', () => {
+  it('light mode tokens meet 4.5:1', () => {
     for (const p of pairs) {
-      assertRatio(light, "light", p.fgVar, p.bgVar, p.name);
+      assertRatio(light, 'light', p.fgVar, p.bgVar, p.name);
     }
   });
 
-  it("dark mode tokens meet 4.5:1", () => {
+  it('dark mode tokens meet 4.5:1', () => {
     for (const p of pairs) {
-      assertRatio(dark, "dark", p.fgVar, p.bgVar, p.name);
+      assertRatio(dark, 'dark', p.fgVar, p.bgVar, p.name);
     }
   });
 
-  it("chip tokens exist in both themes", () => {
-    for (const v of ["chip-user-bg", "chip-user-fg", "chip-ai-inferred", "chip-ai-recommended", "chip-proposed", "chip-open-bg", "chip-open-fg"]) {
+  it('chip tokens exist in both themes', () => {
+    for (const v of [
+      'chip-user-bg',
+      'chip-user-fg',
+      'chip-ai-inferred',
+      'chip-ai-recommended',
+      'chip-proposed',
+      'chip-open-bg',
+      'chip-open-fg',
+    ]) {
       expect(light[v], `light ${v}`).toBeDefined();
       expect(dark[v], `dark ${v}`).toBeDefined();
     }

@@ -2,7 +2,7 @@
 
 One prompt per build phase. Paste **one block per fresh agent session** (Claude Code, Cursor, Codex, or similar), in order. Each prompt points the agent at `CLAUDE.md` and `docs/MVP-SPEC.md`, so those files must be in the repo first.
 
-**Rhythm for every phase:** run the phase prompt → commit → run the REVIEW prompt (bottom of this file) in a *new* session, ideally with a different model, so the work is not graded by its author → fix → next phase.
+**Rhythm for every phase:** run the phase prompt → commit → run the REVIEW prompt (bottom of this file) in a _new_ session, ideally with a different model, so the work is not graded by its author → fix → next phase.
 
 ---
 
@@ -18,17 +18,17 @@ One prompt per build phase. Paste **one block per fresh agent session** (Claude 
 
 ## At a glance
 
-| Phase | Outcome | Needs |
-| --- | --- | --- |
-| 0 Foundation | App shell, design tokens, tooling, lint guardrails | Prerequisites |
-| 1 Database, auth, projects | Sign in, create/list/open projects, RLS, workspace shell | 0 |
-| 2 Brain domain | Schemas, applyOps, classifyOps, readiness, digest, repo | 1 |
-| 3 AI orchestration | Providers, interview turn pipeline, API routes | 2 |
-| 4 Architect panel | Chat, question cards, proposal review | 3 |
-| 5 Workspace views | Overview, readiness, attention, item sections | 4 |
-| 6 Outputs | Build plan, PRD, AI coding prompt | 5 |
-| 7 Hardening | Security checks, evals, README | 6 |
-| 8 Landing (optional) | Marketing page with animated transformation | 1 |
+| Phase                      | Outcome                                                  | Needs         |
+| -------------------------- | -------------------------------------------------------- | ------------- |
+| 0 Foundation               | App shell, design tokens, tooling, lint guardrails       | Prerequisites |
+| 1 Database, auth, projects | Sign in, create/list/open projects, RLS, workspace shell | 0             |
+| 2 Brain domain             | Schemas, applyOps, classifyOps, readiness, digest, repo  | 1             |
+| 3 AI orchestration         | Providers, interview turn pipeline, API routes           | 2             |
+| 4 Architect panel          | Chat, question cards, proposal review                    | 3             |
+| 5 Workspace views          | Overview, readiness, attention, item sections            | 4             |
+| 6 Outputs                  | Build plan, PRD, AI coding prompt                        | 5             |
+| 7 Hardening                | Security checks, evals, README                           | 6             |
+| 8 Landing (optional)       | Marketing page with animated transformation              | 1             |
 
 ---
 

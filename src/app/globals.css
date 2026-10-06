@@ -17,11 +17,11 @@
 
 @theme {
   --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --font-mono:
-    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, 'Liberation Mono', 'Courier New', monospace;
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -236,15 +236,15 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+      'rlig' 1,
+      'calt' 1;
   }
 
   /* Keys, IDs and code use the mono font and tabular figures. */
   .font-mono {
     font-feature-settings:
-      "tnum" 1,
-      "zero" 1;
+      'tnum' 1,
+      'zero' 1;
   }
 
   /* Motion: 120–180ms ease-out, no looping, honor reduced motion (§9.4). */

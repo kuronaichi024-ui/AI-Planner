@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { APP_NAME } from "@/config/app";
+import Link from 'next/link';
+import { APP_NAME } from '@/config/app';
 
 export default function NotFound() {
   return (
@@ -9,10 +9,7 @@ export default function NotFound() {
       <p className="text-base-ui text-muted-foreground">
         The page you requested does not exist in {APP_NAME}.
       </p>
-      <Link
-        href="/"
-        className="text-sm font-medium text-link underline-offset-4 hover:underline"
-      >
+      <Link href="/" className="text-sm font-medium text-link underline-offset-4 hover:underline">
         ← Go home
       </Link>
     </main>
