@@ -11,7 +11,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+        className="text-sm font-medium text-link underline-offset-4 hover:underline"
       >
         ← Go home
       </Link>

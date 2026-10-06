@@ -15,7 +15,7 @@ export default function Home() {
       {process.env.NODE_ENV === "development" && (
         <a
           href="/styleguide"
-          className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+          className="text-sm font-medium text-link underline-offset-4 hover:underline"
         >
           View style guide →
         </a>
