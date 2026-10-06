@@ -1,4 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { parseEnv, envSchema } from "@/config/env";
 
 const base = {
@@ -101,21 +103,46 @@ describe("envSchema shape", () => {
 });
 
 describe("getEnv() startup validation", () => {
-  it("parses process.env when valid", async () => {
-    const original = { ...process.env };
-    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_test";
-    process.env.AI_PROVIDER = "mock";
-    
-    // Test the parseEnv function which getEnv calls internally
-    const env = parseEnv(process.env);
-    expect(env.AI_PROVIDER).toBe("mock");
-    
-    Object.assign(process.env, original);
+  beforeEach(() => {
+    vi.resetModules();
+    vi.stubEnv("NEXT_RUNTIME", "nodejs");
+    vi.stubEnv("NODE_ENV", "test");
   });
 
-  it("throws and names missing variables when required key is absent", () => {
-    expect(() => parseEnv({})).toThrow(/NEXT_PUBLIC_SUPABASE_URL/);
-    expect(() => parseEnv({ NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co" })).toThrow(/NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/);
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("rejects naming NEXT_PUBLIC_SUPABASE_URL when env is empty", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "");
+
+    const { register } = await import("@/instrumentation");
+    await expect(register()).rejects.toThrow(/NEXT_PUBLIC_SUPABASE_URL/);
+  });
+
+  it("resolves when the environment is valid", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://example.supabase.co");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test");
+    vi.stubEnv("AI_PROVIDER", "mock");
+
+    const { register } = await import("@/instrumentation");
+    await expect(register()).resolves.toBeUndefined();
+  });
+
+  it("does nothing when NEXT_RUNTIME is not nodejs", async () => {
+    vi.unstubAllEnvs();
+    vi.stubEnv("NEXT_RUNTIME", "edge");
+
+    const { register } = await import("@/instrumentation");
+    await expect(register()).resolves.toBeUndefined();
+  });
+
+  it("still has the getEnv() call in instrumentation.ts", async () => {
+    const source = readFileSync(
+      resolve(process.cwd(), "src/instrumentation.ts"),
+      "utf8"
+    );
+    expect(source).toMatch(/getEnv\(\)/);
   });
 });
