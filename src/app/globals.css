@@ -126,7 +126,7 @@
  * Blueprint design tokens — MVP-SPEC.md §9.4
  * Base: white / near-black on a neutral zinc scale. One accent: blue #2563EB.
  * Status: success green, warning amber, danger red. Every text/background pair
- * must meet WCAG AA. Values are HSL triplets consumed by tailwind.config.js.
+ * must meet WCAG AA. Values are HSL triplets consumed via @theme in globals.css.
  */
 
 @layer base {

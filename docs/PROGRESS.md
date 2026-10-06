@@ -7,7 +7,7 @@
 **Scaffolding & Tooling**
 
 - Next.js 16 (App Router, TypeScript strict, `src/` directory, `@/*` alias)
-- Tailwind CSS v3.4.17 (PostCSS), shadcn/ui (zinc baseColor, cssVariables) with all required components
+- Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config.cjs`)
 - Prettier, ESLint 9 + typescript-eslint, Vitest (jsdom + Testing Library), Playwright config (3 projects)
 - npm scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `test`, `test:e2e`, `format`, `check`
 
@@ -47,17 +47,17 @@
 
 **Tests**
 
-- Vitest: 12 passing tests (sample + env parsing with provider-conditional validation)
+- Vitest: 45 passing tests (sample + contrast guard + text-primary guard + env parsing/startup with provider-conditional validation)
 - Playwright: config with chromium, mobile-chrome (Pixel 5), mobile-safari (iPhone 12)
 
 ## Decisions
 
 - Visual polish is deferred until after Phase 7; styling uses design tokens only.
-- TypeScript pinned to `~5.9.0` (v7 breaks `@typescript-eslint/parser` peer)
+- TypeScript 5.9.3 installed (`~5.9.0` pinned in package.json)
 - Tailwind upgraded to v4 via official `@tailwindcss/upgrade` tool; v3.4.17 used during scaffolding for shadcn/ui CLI compatibility, but migration completed cleanly once shadcn components were installed. PostCSS config switched to `@tailwindcss/postcss`, `autoprefixer` removed, `tailwind.config.cjs` deleted (v4 CSS-first config in `src/app/globals.css`). Check and build both pass on v4.
-- ESLint is on `9.39.5` (the latest v9 release). npm flags it as unsupported because ESLint 10 is current upstream, but ESLint 10 cannot be adopted yet: `eslint-config-next@16.3.8` has a peer dependency on ESLint `^9.7` and depends on `eslint-plugin-react@7.37.5` which fails under ESLint 10 with `TypeError: contextOrFilename.getFilename is not a function` (a legacy API removed in v10). Must remain on `eslint@^9.0.0` until Next.js updates `eslint-config-next` with ESLint 10 support.
+- ESLint is on `9.39.5` (the latest v9 release). npm flags it as unsupported because ESLint 10 is current upstream, but ESLint 10 cannot be adopted yet: `eslint-config-next@16.3.8` depends on `eslint-plugin-react@7.37.5`, whose peer dependency is `eslint@"^9.7"`. Under ESLint 10, that plugin fails with `TypeError: contextOrFilename.getFilename is not a function` (a legacy API removed in v10). Must remain on `eslint@^9.0.0` until Next.js updates `eslint-config-next` with ESLint 10 support.
 - shadcn/ui with zinc baseColor and CSS variables for consistent token consumption
-- ESM (`"type": "module"`) to match Next.js 16 Turbopack defaults; config files renamed to `.cjs`
+- ESM (`"type": "module"`) to match Next.js 16 Turbopack defaults; config files: `postcss.config.cjs` and `next.config.ts` (no Tailwind config file in v4)
 - `server-only` mocked in Vitest via alias to avoid import-time errors in test environment
 - Env validation uses Zod `superRefine` for provider-conditional key requirements (fail-fast per §12)
 
@@ -75,7 +75,7 @@
   9. `cbai/glm-5.2`
   10. `cbai/minimax-m3`
       _(Note: The active Hermes session cannot determine which specific model in the chain answered a given request.)_
-- **Reviewer**: [Pending] Per PHASES.md rhythm, Phase 0 should be reviewed in a fresh session with a different model to avoid self-grading bias. Recommended: use an independent model family (e.g. distinct from the primary fallback chain models) once approved.
+- **Reviewer**: Independent review conducted by a separate Claude session on 2026-10-06. Result: Phase 0 approved with six follow-up items (text-link token fix, ESLint layering rewrite, styleguide dialog demo, env startup test rewrite, dependency cleanup, progress-log corrections), all addressed in this follow-up pass.
 
 ## Assumptions
 
