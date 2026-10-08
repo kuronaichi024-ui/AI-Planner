@@ -1,11 +1,44 @@
 node_modules/
 .next/
 out/
-.env*
-!.env.example
 tsconfig.tsbuildinfo
 next-env.d.ts
+*.tsbuildinfo
+
+# --- Sensitive files (email, password, credentials, keys) ---
+# Local env files contain Supabase URL, publishable key, and test user emails & passwords
+.env*
+!.env.example
+
+# Supabase CLI temp directory (may cache tokens / session data)
+supabase/.temp/
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Credential / secret JSON files
+secrets.json
+credentials.json
+*.credentials.json
+
+# direnv
+.envrc
+
+# IDE / editor configs that may embed env vars or tokens
+.vscode/
+.idea/
+
+# Log files can leak env vars or secrets printed during build/test
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Playwright artifacts (screenshots / traces may capture auth forms with email fields)
 playwright-report/
 test-results/
-*.tsbuildinfo
-supabase/.temp/
