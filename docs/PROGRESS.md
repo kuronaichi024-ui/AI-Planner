@@ -110,3 +110,16 @@
 - [x] 7 Playwright specs — signed-out + project flow (16 tests) all pass on Chromium
 - [x] 8 final checks, docs, report
 - [x] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local
+
+## Phase 2 status
+
+- [x] 0 orient
+- [ ] 1 schemas and keys
+- [ ] 2 applyOps
+- [ ] 3 classify and select
+- [ ] 4 readiness and counts
+- [ ] 5 digest
+- [ ] 6 database wrapper
+- [ ] 7 fixture, seed script, integration test
+- [ ] 8 invariant tests, guards, coverage
+- [ ] 9 final checks, docs, report
