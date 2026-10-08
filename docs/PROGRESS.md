@@ -114,7 +114,7 @@
 ## Phase 2 status
 
 - [x] 0 orient
-- [ ] 1 schemas and keys
+- [x] 1 schemas and keys
 - [ ] 2 applyOps
 - [ ] 3 classify and select
 - [ ] 4 readiness and counts
