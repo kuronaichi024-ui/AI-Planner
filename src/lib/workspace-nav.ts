@@ -36,3 +36,39 @@ export function findSection(slug: string): WorkspaceSection | null {
   if (slug === '') return null;
   return WORKSPACE_SECTIONS.find(section => section.slug === slug) ?? null;
 }
+
+/**
+ * Maps a section slug to the key in ProjectCounts it shows a badge for, or null.
+ * The Overview and output sections have no count.
+ */
+export function countKeyForSlug(slug: string): keyof {
+  requirements: number;
+  features: number;
+  roles: number;
+  screens: number;
+  entities: number;
+  rules: number;
+  decisions: number;
+  tasks: number;
+} | null {
+  switch (slug) {
+    case 'requirements':
+      return 'requirements';
+    case 'features':
+      return 'features';
+    case 'roles':
+      return 'roles';
+    case 'screens':
+      return 'screens';
+    case 'data-model':
+      return 'entities';
+    case 'rules':
+      return 'rules';
+    case 'decisions':
+      return 'decisions';
+    case 'build-plan':
+      return 'tasks';
+    default:
+      return null;
+  }
+}
