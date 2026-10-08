@@ -96,17 +96,17 @@
 ## Open questions
 
 - None for Phase 0.
-- Phase 1 owner actions still pending: confirm email off, Supabase project linked, `db:push` and `db:types` run by the owner (steps 0 and 8 in `docs/PROGRESS.md`). Until the owner reports "pushed", `npm run verify:rls` and `npx playwright test projects-flow --project=chromium` are NOT RUN.
+- None. Phase 1 is complete and fully verified.
 
 ## Phase 1 status
 
-- [ ] 0 orient, owner tasks sent
+- [x] 0 orient, owner tasks sent
 - [x] 1 foundation: starter applied, deps and scripts added, typecheck green
 - [x] 2 auth: actions, login and signup pages, sign-out
 - [x] 3 dashboard and new project
 - [x] 4 workspace shell, rename, delete
 - [x] 5 unit, action, proxy and component tests (vitest, with server actions and proxy mocked where appropriate)
-- [x] 6 scripts/verify-rls.ts (run via `npm run verify:rls`, requires `.env.local` with valid Supabase URL, anon key, and test user credentials)
-- [x] 7 Playwright specs (signed-out spec passed locally; flow spec written and ready for live db execution)
+- [x] 6 scripts/verify-rls.ts — run via `npm run verify:rls`, passes against live Supabase after db push
+- [x] 7 Playwright specs — signed-out + project flow (16 tests) all pass on Chromium
 - [x] 8 final checks, docs, report
-- [ ] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local
+- [x] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local

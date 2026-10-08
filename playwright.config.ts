@@ -1,4 +1,28 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
+// Load .env.local if present
+try {
+  const envPath = path.resolve(process.cwd(), '.env.local');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        const key = trimmed.slice(0, idx).trim();
+        const val = trimmed.slice(idx + 1).trim();
+        if (key && !(key in process.env)) {
+          process.env[key] = val;
+        }
+      }
+    }
+  }
+} catch {
+  // ignore
+}
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -32,7 +56,10 @@ export default defineConfig({
     timeout: 120000,
     env: {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321',
-      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_placeholder',
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_placeholder',
+      TEST_USER_A_EMAIL: process.env.TEST_USER_A_EMAIL || '',
+      TEST_USER_A_PASSWORD: process.env.TEST_USER_A_PASSWORD || '',
     },
   },
 });

@@ -26,6 +26,12 @@ const supabase: SupabaseClient<Database> = createClient<Database>(
   { auth: { persistSession: false, autoRefreshToken: false } },
 );
 
+const supabaseAnon: SupabaseClient<Database> = createClient<Database>(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  { auth: { persistSession: false, autoRefreshToken: false } },
+);
+
 const results: CheckResult[] = [];
 
 function record(name: string, passed: boolean, details?: string) {
@@ -111,7 +117,7 @@ async function main() {
 
   const { error: propErr } = await supabase
     .from('proposals')
-    .insert({ project_id: projectId, ops: {} });
+    .insert({ project_id: projectId, ops: [] });
   if (propErr) throw propErr;
 
   const { error: insErr } = await supabase
@@ -127,8 +133,8 @@ async function main() {
 
   const { error: brainEvtErr } = await supabase.from('brain_events').insert({
     project_id: projectId,
-    kind: 'k',
-    actor: 'a',
+    kind: 'decision',
+    actor: 'user',
     summary: 's',
     revision: 0,
   });
@@ -136,7 +142,7 @@ async function main() {
 
   const { error: expErr } = await supabase.from('exports').insert({
     project_id: projectId,
-    kind: 'k',
+    kind: 'prd',
     content_md: '# m',
     brain_revision: 0,
   });
@@ -146,7 +152,7 @@ async function main() {
     .from('ai_usage')
     .insert({
       project_id: projectId,
-      job: 'j',
+      job: 'interview',
       model: 'm',
       provider: 'p',
       ok: true,
@@ -212,7 +218,7 @@ async function main() {
   {
     const { error } = await supabase
       .from('proposals')
-      .insert({ project_id: projectId, ops: {} });
+      .insert({ project_id: projectId, ops: [] });
     record(`B insert into proposals on A's project`, !error || error.code === '42501', error ? `code=${error.code}` : 'inserted');
   }
   {
@@ -224,13 +230,13 @@ async function main() {
   {
     const { error } = await supabase
       .from('brain_events')
-      .insert({ project_id: projectId, kind: 'k', actor: 'a', summary: 's', revision: 0 });
+      .insert({ project_id: projectId, kind: 'decision', actor: 'user', summary: 's', revision: 0 });
     record(`B insert into brain_events on A's project`, !error || error.code === '42501', error ? `code=${error.code}` : 'inserted');
   }
   {
     const { error } = await supabase
       .from('exports')
-      .insert({ project_id: projectId, kind: 'k', content_md: '# m', brain_revision: 0 });
+      .insert({ project_id: projectId, kind: 'prd', content_md: '# m', brain_revision: 0 });
     record(`B insert into exports on A's project`, !error || error.code === '42501', error ? `code=${error.code}` : 'inserted');
   }
 
@@ -284,7 +290,7 @@ async function main() {
     p_expected_revision: currentRev,
     p_brain: { note: 'rls-verify' } as Json,
     p_counts: {} as Json,
-    p_event: {} as Json,
+    p_event: { actor: 'user', kind: 'edit', summary: 'test event' } as Json,
     p_readiness: 0,
   });
   record(
@@ -307,16 +313,14 @@ async function main() {
 
   // 8. Anonymous client
   console.log('\n8. Verifying anonymous client...');
-  await supabase.auth.signOut();
-
-  const { data: anonProj, error: anonProjErr } = await supabase.from('projects').select('id').limit(1);
+  const { data: anonProj, error: anonProjErr } = await supabaseAnon.from('projects').select('id').limit(1);
   record(
     'Anonymous projects select refused',
     !anonProj && !!anonProjErr,
     anonProjErr ? anonProjErr.message : 'returned rows',
   );
 
-  const { data: anonRpc, error: anonRpcErr } = await supabase.rpc('commit_brain', {
+  const { data: anonRpc, error: anonRpcErr } = await supabaseAnon.rpc('commit_brain', {
     p_project_id: projectId,
     p_expected_revision: 0,
     p_brain: {} as Json,
@@ -372,10 +376,13 @@ async function main() {
   if (usageAfterErr) throw usageAfterErr;
   record(
     'ai_usage rows survive',
-    usageAfter.length === usageCount,
+    usageAfter.length >= usageCount,
     `${usageCount} -> ${usageAfter.length}`,
   );
-  const allNull = usageAfter.every((u) => u.project_id === null);
+  const survivingIds = new Set(usageBefore.map((u) => u.id));
+  const survivors = usageAfter.filter((u) => survivingIds.has(u.id));
+  record('ai_usage pre-delete rows still present', survivors.length === usageCount);
+  const allNull = survivors.every((u) => u.project_id === null);
   record('ai_usage project_id set to null', allNull);
 
   // 11. Cleanup
