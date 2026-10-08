@@ -94,7 +94,7 @@
 - [ ] 0 orient, owner tasks sent
 - [x] 1 foundation: starter applied, deps and scripts added, typecheck green
 - [x] 2 auth: actions, login and signup pages, sign-out
-- [ ] 3 dashboard and new project
+- [x] 3 dashboard and new project
 - [ ] 4 workspace shell, rename, delete
 - [ ] 5 unit, action, proxy and component tests
 - [ ] 6 scripts/verify-rls.ts
