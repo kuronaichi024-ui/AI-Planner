@@ -98,6 +98,6 @@
 - [x] 4 workspace shell, rename, delete
 - [x] 5 unit, action, proxy and component tests (vitest, with server actions and proxy mocked where appropriate)
 - [x] 6 scripts/verify-rls.ts (run via `npm run verify:rls`, requires `.env.local` with valid Supabase URL, anon key, and test user credentials)
-- [ ] 7 Playwright specs
+- [x] 7 Playwright specs (signed-out spec passed locally; flow spec written and ready for live db execution)
 - [ ] 8 final checks, docs, report
 - [ ] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local
