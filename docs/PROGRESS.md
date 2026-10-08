@@ -88,3 +88,16 @@
 ## Open questions
 
 - None for Phase 0.
+
+## Phase 1 status
+
+- [ ] 0 orient, owner tasks sent
+- [x] 1 foundation: starter applied, deps and scripts added, typecheck green
+- [ ] 2 auth: actions, login and signup pages, sign-out
+- [ ] 3 dashboard and new project
+- [ ] 4 workspace shell, rename, delete
+- [ ] 5 unit, action, proxy and component tests
+- [ ] 6 scripts/verify-rls.ts
+- [ ] 7 Playwright specs
+- [ ] 8 final checks, docs, report
+- [ ] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local
