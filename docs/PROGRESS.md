@@ -60,6 +60,7 @@
 - ESM (`"type": "module"`) to match Next.js 16 Turbopack defaults; config files: `postcss.config.cjs` and `next.config.ts` (no Tailwind config file in v4)
 - `server-only` mocked in Vitest via alias to avoid import-time errors in test environment
 - Env validation uses Zod `superRefine` for provider-conditional key requirements (fail-fast per §12)
+- `ai_usage.project_id` is `ON DELETE SET NULL` (see `starter/supabase/migrations/0001_init.sql`), so deleting a project preserves rate-limit rows; all other child tables cascade.
 
 ## Build & Review Models
 
@@ -85,9 +86,17 @@
 - Test credentials (`TEST_USER_A_*`, `TEST_USER_B_*`) are optional and only used by `scripts/verify-rls.ts` in Phase 1.
 - Playwright e2e tests not yet implemented (Phase 0 only requires config).
 
+### Phase 1 — Assumptions (spec §4 silent items)
+
+- Overview shows the stored `idea_text` read-only above the "Coming in a later phase" note (later phases will replace this with the live Brain).
+- Workspace nav counts are hidden until the count is above 0.
+- The Delete project dialog stays a centered dialog at every width (full-screen dialogs arrive with item dialogs in a later phase).
+- Sign-up with email confirmation on shows "Account created. Check your email to confirm it, then sign in." instead of signing in.
+
 ## Open questions
 
 - None for Phase 0.
+- Phase 1 owner actions still pending: confirm email off, Supabase project linked, `db:push` and `db:types` run by the owner (steps 0 and 8 in `docs/PROGRESS.md`). Until the owner reports "pushed", `npm run verify:rls` and `npx playwright test projects-flow --project=chromium` are NOT RUN.
 
 ## Phase 1 status
 
@@ -99,5 +108,5 @@
 - [x] 5 unit, action, proxy and component tests (vitest, with server actions and proxy mocked where appropriate)
 - [x] 6 scripts/verify-rls.ts (run via `npm run verify:rls`, requires `.env.local` with valid Supabase URL, anon key, and test user credentials)
 - [x] 7 Playwright specs (signed-out spec passed locally; flow spec written and ready for live db execution)
-- [ ] 8 final checks, docs, report
+- [x] 8 final checks, docs, report
 - [ ] owner: Confirm email off, linked, db pushed, types generated, test users in .env.local

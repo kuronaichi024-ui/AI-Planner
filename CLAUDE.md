@@ -22,7 +22,7 @@ Blueprint (working title; one constant, `APP_NAME` in `src/config/app.ts`) is a 
 
 ## Commands
 
-Package manager: npm. Scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `test`, `test:e2e`, `format`, `check` (typecheck + lint + test). Phase 1 adds `db:push` and `db:types`; Phase 7 adds `eval`.
+Package manager: npm. Scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `test`, `test:e2e`, `format`, `check` (typecheck + lint + test). Phase 1 adds `db:push`, `db:types`, and `verify:rls`; Phase 7 adds `eval`.
 
 ## Definition of done (every phase)
 

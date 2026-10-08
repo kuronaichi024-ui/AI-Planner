@@ -31,7 +31,7 @@ export function FormMessage({
 
 export function FieldError({ id, message }: { id: string; message: string }) {
   return (
-    <p id={id} className="text-xs text-destructive">
+    <p id={id} className="text-xs text-foreground">
       {message}
     </p>
   );
